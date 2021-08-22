@@ -37,10 +37,34 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
-}
+function decode(value) {
+    const arrValue = value.split('');
+    const arrCodedChars = [];
+    let str = '';
+    
+    for (let i = 1; i <= arrValue.length; i++) {
+        str += arrValue[i - 1];
+        if (i % 10 === 0) {
+            arrCodedChars.push(str);
+            str = '';
+        }
+    }
+    
+    const normalizeArrCodedChars = arrCodedChars.map((arrCodedChar) => String(parseInt(arrCodedChar)));
+    const arrMorseChars = normalizeArrCodedChars.map((normalizeArrCodedChar) => {
+        const tenRegExp = /10/gi;
+        const elevenRegExp = /11/gi;
 
+        if (normalizeArrCodedChar === 'NaN') {
+            return ' ';
+        }
+        return normalizeArrCodedChar.replace(tenRegExp, '.').replace(elevenRegExp, '-');
+    });
+    
+    const result = arrMorseChars.map((arrMorseChar) => arrMorseChar === ' ' ? ' ' : MORSE_TABLE[arrMorseChar]).join('');
+    return result;
+}
+    
 module.exports = {
     decode
 }
